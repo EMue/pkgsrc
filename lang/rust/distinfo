@@ -151,3 +151,4 @@ SHA1 (patch-vendor_openssl-sys-0.9.102_build_main.rs) = 8861b7d3acc1643f7fe6f494
 SHA1 (patch-vendor_openssl-sys-0.9.92_build_find__normal.rs) = 91ad0d3e78055a5a205d55cd2c260cde70233bfe
 SHA1 (patch-vendor_openssl-sys-0.9.92_build_main.rs) = a47c0b7144466592aca3b622cb77498d59c5dfc4
 SHA1 (patch-vendor_rustc-ap-rustc__target_src_spec_aarch64__be__unknown__netbsd.rs) = 4e86aec4c89db9a331950a12f8ec7b8aaa50eed7
+SHA1 (patch-vendor_libsqlite3-sys-0.28.0_build.rs) = c968eede454c3afd62bf8809b23ea7d9a289868d
