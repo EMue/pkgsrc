@@ -120,7 +120,7 @@ CONFIGURE_ARGS+=	--with-clang-path=${PREFIX}/bin/clang
 CONFIGURE_ARGS+=	--with-libclang-path=${PREFIX}/lib
 
 # RLBox WASM sandbox
-.if ${MACHINE_ARCH} == "x86_64" || ${MACHINE_ARCH} == "i386" || ${MACHINE_ARCH} == "powerpc64le"
+.if ${MACHINE_ARCH} == "x86_64" || ${MACHINE_ARCH} == "i386"
 # For wasm-ld command
 TOOL_DEPENDS+=		lld-[0-9]*:../../devel/lld
 .include "../../lang/wasi-libc/buildlink3.mk"
