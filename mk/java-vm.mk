@@ -174,6 +174,7 @@ _ONLY_FOR_PLATFORMS.openjdk-bin= \
 _ONLY_FOR_PLATFORMS.openjdk8= \
 	DragonFly-*-* \
 	Linux-*-x86_64			Linux-*-i[3-6]86		\
+	Linux-*-powerpc64le						\
 	NetBSD-[7-9].*-x86_64		NetBSD-1[0-9].*-x86_64		\
 	NetBSD-[7-9].*-i386		NetBSD-1[0-9].*-i386		\
 	NetBSD-[7-9].*-sparc64		NetBSD-1[0-9].*-sparc64		\

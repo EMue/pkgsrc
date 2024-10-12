@@ -91,9 +91,6 @@ CONFIGURE_ENV+=		bash_cv_func_ctype_nonascii=yes
 CONFIGURE_ENV+=		bash_cv_wexitstatus_offset=8
 .endif
 
-pre-configure:
-	${RM} -f ${WRKSRC}/y.tab.c
-
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/doc/bash.1 ${DESTDIR}${PREFIX}/${PKGMANDIR}/man1
 	${INSTALL_MAN} ${WRKSRC}/doc/bashbug.1 ${DESTDIR}${PREFIX}/${PKGMANDIR}/man1

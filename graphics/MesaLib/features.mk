@@ -14,7 +14,8 @@ MESALIB_SUPPORTS_DRI?=		no
 
 _MESALIB_ARCH_SUPPORTS_XA?=	no # Only for graphics/MesaLib/Makefile
 .if ${MACHINE_ARCH} == "i386" || ${MACHINE_ARCH} == "x86_64" || \
-    ${MACHINE_ARCH:M*arm*} || ${MACHINE_ARCH} == "aarch64"
+    ${MACHINE_ARCH:M*arm*} || ${MACHINE_ARCH} == "aarch64" || \
+    ${MACHINE_ARCH} == "powerpc64le"
 _MESALIB_ARCH_SUPPORTS_XA=	yes
 .endif
 

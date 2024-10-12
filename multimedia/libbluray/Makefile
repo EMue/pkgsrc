@@ -18,10 +18,13 @@ CONFIGURE_ARGS+=	--disable-bdjava-jar
 CONFIGURE_ARGS+=	--disable-optimizations
 PKGCONFIG_OVERRIDE+=	src/libbluray.pc.in
 
+USE_JAVA=build
+
 # provide jni_md.h for other architectures
 post-extract:
 	${LN} -s ${WRKSRC}/jni/linux/jni_md.h ${WRKSRC}/jni/jni_md.h
 
+.include "../../mk/java-vm.mk"
 .include "../../fonts/fontconfig/buildlink3.mk"
 .include "../../graphics/freetype2/buildlink3.mk"
 .include "../../textproc/libxml2/buildlink3.mk"

@@ -32,6 +32,7 @@ PKG_SUGGESTED_OPTIONS+=		x11
     ${OPSYS} != "SunOS" && \
       (${MACHINE_ARCH} == "i386" || \
        ${MACHINE_ARCH} == "x86_64" || \
+       ${MACHINE_ARCH} == "powerpc64le" || \
        ${MACHINE_ARCH} == "aarch64")
 PKG_SUGGESTED_OPTIONS+=		llvm
 .endif

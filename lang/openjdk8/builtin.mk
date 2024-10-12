@@ -6,6 +6,10 @@ BUILTIN_FIND_FILES_VAR:=	OJDK8
 BUILTIN_FIND_FILES.OJDK8=	\
 	/usr/lib64/jvm/java-1.8.0-openjdk-1.8.0/bin/javac	\
 	/usr/lib/jvm/java-1.8.0-openjdk/bin/javac
+BUILTIN_FIND_HEADERS_VAR:=	H_JNI
+BUILTIN_FIND_HEADERS.H_JNI:=	\
+	../lib64/jvm/java-1.8.0-openjdk-1.8.0/include/jni.h		\
+	../lib/jvm/java-1.8.0-openjdk/include/jni.h
 
 .include "../../mk/buildlink3/bsd.builtin.mk"
 
@@ -14,7 +18,8 @@ BUILTIN_FIND_FILES.OJDK8=	\
 ### set IS_BUILTIN.<pkg> appropriately ("yes" or "no").
 ###
 .if !defined(IS_BUILTIN.openjdk8)
-.  if empty(OJDK8:M__nonexistent__)
+.  if empty(OJDK8:M__nonexistent__) && \
+      empty(H_JNI:M__nonexistent__)
 IS_BUILTIN.openjdk8=	yes
 .  else
 IS_BUILTIN.openjdk8=	no
@@ -76,6 +81,13 @@ CHECK_BUILTIN.openjdk8?=	no
 # set to "yes" or "no".
 #
 .  if ${USE_BUILTIN.openjdk8:tl} == yes
+JNI_INCLUDE=	${H_JNI:H}
 PKG_JAVA_HOME=	${OJDK8:H:H}
+#BUILDLINK_INCDIRS.openjdk8=	${JNI_INCLUDE}
+# TODO: Generate these paths properly.
+BUILDLINK_INCDIRS.openjdk8+=	include/../lib64/jvm/java-1.8.0-openjdk-1.8.0/include
+BUILDLINK_INCDIRS.openjdk8+=	include/../lib64/jvm/java-1.8.0-openjdk-1.8.0/include/linux
+CPPFLAGS+=	-I${JNI_INCLUDE:tA}
+CFLAGS+=	-I${JNI_INCLUDE:tA}
 .  endif
 .endif  # CHECK_BUILTIN.openjdk8

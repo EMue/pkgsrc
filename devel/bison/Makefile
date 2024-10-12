@@ -16,7 +16,6 @@ CHECK_PORTABILITY_SKIP+=	tests/local.mk
 USE_LANGUAGES=		c c++
 USE_TOOLS+=		grep gm4:run flex perl:build
 GNU_CONFIGURE=		yes
-CONFIGURE_ARGS+=	--disable-yacc
 CONFIGURE_ENV+=		ac_cv_prog_M4=${TOOLS_PATH.gm4}
 
 .include "options.mk"

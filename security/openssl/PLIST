@@ -144,7 +144,6 @@ lib/cmake/OpenSSL/OpenSSLConfig.cmake
 lib/cmake/OpenSSL/OpenSSLConfigVersion.cmake
 ${PLIST.afalg}lib/engines-3/afalg.${SOEXT}
 lib/engines-3/capi.${SOEXT}
-${PLIST.devcrypto}lib/engines-3/devcrypto.${SOEXT}
 lib/engines-3/loader_attic.${SOEXT}
 lib/engines-3/padlock.${SOEXT}
 lib/libcrypto.a

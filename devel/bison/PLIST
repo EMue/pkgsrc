@@ -1,6 +1,9 @@
 @comment $NetBSD: PLIST,v 1.34 2021/09/29 08:40:14 wiz Exp $
 bin/bison
 info/bison.info
+bin/yacc
+lib/liby.a
+man/man1/yacc.1
 man/man1/bison.1
 share/aclocal/bison-i18n.m4
 share/bison/README.md

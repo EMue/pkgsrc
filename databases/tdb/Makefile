@@ -45,4 +45,5 @@ SUBST_SED.docbook+=	-e 's,http://docbook.sourceforge.net/release/xsl/current,${P
 
 .include "../../lang/python/application.mk"
 .include "../../lang/python/extension.mk"
+.include "../../devel/gettext-lib/buildlink3.mk"
 .include "../../mk/bsd.pkg.mk"

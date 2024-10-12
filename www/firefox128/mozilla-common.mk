@@ -120,7 +120,7 @@ CONFIGURE_ARGS+=	--with-clang-path=${PREFIX}/bin/clang
 CONFIGURE_ARGS+=	--with-libclang-path=${PREFIX}/lib
 
 # RLBox WASM sandbox
-.if ${MACHINE_ARCH} == "x86_64" || ${MACHINE_ARCH} == "i386"
+.if ${MACHINE_ARCH} == "x86_64" || ${MACHINE_ARCH} == "i386" || ${MACHINE_ARCH} == "powerpc64le"
 # For wasm-ld command
 TOOL_DEPENDS+=		lld-[0-9]*:../../devel/lld
 .include "../../lang/wasi-libc/buildlink3.mk"
@@ -207,7 +207,8 @@ PLIST.v4l2_decode=	yes	# see toolkit/moz.configure
 .if ${MACHINE_ARCH} == "aarch64" || \
     ${MACHINE_ARCH:M*arm*} || \
     ${MACHINE_ARCH} == "i386" || \
-    ${MACHINE_ARCH} == "x86_64"
+    ${MACHINE_ARCH} == "x86_64" || \
+    ${MACHINE_ARCH} == "powerpc64le"
 PLIST.ffvpx=	yes	# see media/ffvpx/ffvpxcommon.mozbuild
 .endif
 
@@ -271,3 +272,4 @@ CONFIGURE_ARGS+=	--enable-default-toolkit=cairo-gtk3
 .endif
 .include "../../lang/python/batteries-included.mk"
 .include "../../lang/python/application.mk"
+.include "../../audio/alsa-lib/buildlink3.mk"

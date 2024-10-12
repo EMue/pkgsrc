@@ -221,6 +221,13 @@ RUST_STAGE0:=		rust-${RUST_STAGE0_VER}-${RUST_ARCH}.tar.gz
 RUST_STD_STAGE0:=	rust-std-${RUST_STAGE0_VER}-${RUST_ARCH}.tar.gz
 DISTFILES:=		${DISTFILES} ${RUST_STAGE0} ${RUST_STD_STAGE0}
 .endif
+.if ${MACHINE_PLATFORM:MLinux-*-powerpc64le} || make(distinfo) || make (makesum) || make(mdi)
+RUST_STAGE0_VER=	1.78.0
+RUST_ARCH:=		powerpc64le-unknown-linux-gnu
+RUST_STAGE0:=		rust-${RUST_STAGE0_VER}-${RUST_ARCH}.tar.gz
+RUST_STD_STAGE0:=	rust-std-${RUST_STAGE0_VER}-${RUST_ARCH}.tar.gz
+DISTFILES:=		${DISTFILES} ${RUST_STAGE0} ${RUST_STD_STAGE0}
+.endif
 .if ${MACHINE_PLATFORM:MLinux-*-earmv6hf} || make(distinfo) || make (makesum) || make(mdi)
 RUST_STAGE0_VER=	1.78.0
 RUST_ARCH:=		arm-unknown-linux-gnueabihf
