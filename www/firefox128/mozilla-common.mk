@@ -133,6 +133,10 @@ CONFIGURE_ENV+=		WASM_CXX=${PREFIX}/bin/clang++
 CONFIGURE_ARGS+=	--without-wasm-sandboxed-libraries
 .endif
 
+.if ${MACHINE_ARCH} == "powerpc64le"
+CONFIGURE_ARGS+=	--enable-jit
+.endif
+
 .include "../../sysutils/pciutils/libname.mk"
 SUBST_CLASSES+=				fix-libpci-soname
 SUBST_STAGE.fix-libpci-soname=		pre-configure
