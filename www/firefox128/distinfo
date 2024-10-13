@@ -46,3 +46,4 @@ SHA1 (patch-toolkit_moz.configure) = 1306e7ac3c3939886aff38a58dd3162e6517409b
 SHA1 (patch-toolkit_mozapps_installer_packager.mk) = 706635b76a7b525794aba95e95544f09e18bb662
 SHA1 (patch-xpcom_base_nscore.h) = 1ac4d34d3c9e80bc1ac966c6c84cb320bc0fa1ec
 SHA1 (patch-xpcom_reflect_xptcall_md_unix_moz.build) = 8980398051fa16c7283acb6d323419993cce1420
+SHA1 (patch-powerpc64le_jit.diff) = c418fd66e0aa2758f171ac0e8276140bd13ef644
