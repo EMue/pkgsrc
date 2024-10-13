@@ -261,3 +261,4 @@ CONFIGURE_ARGS+=	--enable-default-toolkit=cairo-gtk3
 .endif
 .include "../../lang/python/batteries-included.mk"
 .include "../../lang/python/application.mk"
+.include "../../audio/alsa-lib/buildlink3.mk"
