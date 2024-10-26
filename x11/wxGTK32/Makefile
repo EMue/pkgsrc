@@ -94,6 +94,11 @@ CONFIGURE_ARGS.Darwin+=	--without-macosx-version-min
 CONFIGURE_ARGS.Darwin+=	--disable-precomp-headers
 CONFIGURE_ARGS.SunOS+=	--disable-xlocale
 
+# Does not work in at least some applications such as kicad.
+.if ${MACHINE_ARCH} == "powerpc64le"
+CONFIGURE_ARGS+=	--disable-glcanvasegl
+.endif
+
 CONFIGURE_ENV.SunOS+=	wx_cv_inotify_usable=no
 
 SUBST_CLASSES+=			fix-paths

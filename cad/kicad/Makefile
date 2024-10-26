@@ -28,8 +28,9 @@ CMAKE_CONFIGURE_ARGS+=		-DKICAD_SCRIPTING_WXPYTHON=OFF
 CMAKE_CONFIGURE_ARGS+=		-DKICAD_BUILD_I18N=ON
 
 # KICAD_USE_EGL must be defined if wxWidgets was compiled with EGL canvas.
+# Specifically disabled in wxWidgets for ppc64le due to problems here.
 .include "../../graphics/MesaLib/features.mk"
-.if !empty(MESALIB_SUPPORTS_EGL:Myes)
+.if !empty(MESALIB_SUPPORTS_EGL:Myes) && ${MACHINE_ARCH} != "powerpc64le"
 CMAKE_CONFIGURE_ARGS+=		-DKICAD_USE_EGL=ON
 .else
 CMAKE_CONFIGURE_ARGS+=		-DKICAD_USE_EGL=OFF
