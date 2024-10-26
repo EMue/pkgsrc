@@ -8,3 +8,4 @@ SHA1 (patch-ab) = 489e8e4f978ff531322a445612f836c2d90e4e64
 SHA1 (patch-ac) = 869175eceeaba245ddda65ce6043eb243c6dd039
 SHA1 (patch-configure.ac) = 0610ecc9ad8bc9ac5b523ffecb27011854f5e023
 SHA1 (patch-src_tools_Makefile.am) = e5f67855c48e04fe12deb90904c9c27e2441a8cf
+SHA1 (patch-src_tools_hunspell.cxx) = 2b787bd73f4d377dfd3b05347b64fbe0eb215f02
