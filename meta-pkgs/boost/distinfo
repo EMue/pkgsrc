@@ -34,3 +34,4 @@ SHA1 (patch-libs_filesystem_src_directory.cpp) = ec0ee191ae0ebc2324acef3e1cb7e47
 SHA1 (patch-libs_python_src_numpy_dtype.cpp) = 4c8cc12addfb6f42d534729cce0ed77ac84ae56f
 SHA1 (patch-tools_build_src_engine_build.sh) = 7a756f04a2f11fd06bfa69c5d8ad160926f7da95
 SHA1 (patch-tools_build_src_tools_gcc.jam) = 4d895f14965ee29e328dda15e9975ccc1c14673f
+SHA1 (patch-fix_bug_182.diff) = e5120b1fae96b410b30e0234f70230b00c1473ca
