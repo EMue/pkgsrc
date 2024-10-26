@@ -38,7 +38,7 @@ PLIST.log=		yes
 
 # FIXME: other systems might also not support 'long double'
 # see patch-boost_math_tools_config.hpp
-.if ${OPSYS} != "FreeBSD"
+.if ${OPSYS} != "FreeBSD" && ${MACHINE_ARCH} != powerpc64le
 PLIST.longdbl=		yes
 .endif
 
