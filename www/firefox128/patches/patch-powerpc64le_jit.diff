@@ -1,5 +1,5 @@
 --- ./config/check_macroassembler_style.py.orig	2024-10-08 23:18:25.000000000 +0200
-+++ ./config/check_macroassembler_style.py	2024-10-13 10:10:33.128040832 +0200
++++ ./config/check_macroassembler_style.py	2024-11-07 19:47:12.597678056 +0100
 @@ -26,7 +26,7 @@
  import sys
  
@@ -10,7 +10,7 @@
      ["x86", "x64", "arm", "arm64", "loong64", "riscv64", "wasm32"]
  )
 --- ./modules/libpref/init/StaticPrefList.yaml.orig	2024-10-08 23:18:33.000000000 +0200
-+++ ./modules/libpref/init/StaticPrefList.yaml	2024-10-13 10:10:33.138039815 +0200
++++ ./modules/libpref/init/StaticPrefList.yaml	2024-11-07 19:47:12.607677062 +0100
 @@ -7538,7 +7538,7 @@
  
  - name: javascript.options.ion
@@ -21,7 +21,7 @@
    do_not_use_directly: true
  
 --- ./modules/libpref/init/all.js.orig	2024-10-08 23:18:34.000000000 +0200
-+++ ./modules/libpref/init/all.js	2024-10-13 10:10:33.138039815 +0200
++++ ./modules/libpref/init/all.js	2024-11-07 19:47:12.607677062 +0100
 @@ -894,10 +894,10 @@
  pref("dom.event.contextmenu.enabled",       true);
  
@@ -37,7 +37,7 @@
  pref("javascript.options.asyncstack", true);
  // Broadly capturing async stack data adds overhead that is only advisable for
 --- ./build/moz.configure/lto-pgo.configure.orig	2024-10-08 23:18:26.000000000 +0200
-+++ ./build/moz.configure/lto-pgo.configure	2024-10-13 10:10:33.138039815 +0200
++++ ./build/moz.configure/lto-pgo.configure	2024-11-07 19:47:12.597678056 +0100
 @@ -7,7 +7,7 @@
  # PGO
  # ==============================================================
@@ -57,7 +57,7 @@
          )
  
 --- ./build/pgo/profileserver.py.orig	2024-10-08 23:18:26.000000000 +0200
-+++ ./build/pgo/profileserver.py	2024-10-13 10:10:33.138039815 +0200
++++ ./build/pgo/profileserver.py	2024-11-07 19:47:12.597678056 +0100
 @@ -97,7 +97,20 @@
      locations = ServerLocations()
      locations.add_host(host="127.0.0.1", port=PORT, options="primary,privileged")
@@ -91,9 +91,9 @@
          llvm_profdata = env.get("LLVM_PROFDATA")
          if llvm_profdata:
              profraw_files = glob.glob("*.profraw")
---- ./toolkit/components/terminator/nsTerminator.cpp.orig	2024-10-08 23:18:43.000000000 +0200
-+++ ./toolkit/components/terminator/nsTerminator.cpp	2024-10-13 10:10:33.138039815 +0200
-@@ -332,6 +332,11 @@
+--- ./toolkit/components/terminator/nsTerminator.cpp.orig	2024-11-07 19:45:16.989184277 +0100
++++ ./toolkit/components/terminator/nsTerminator.cpp	2024-11-07 19:47:12.607677062 +0100
+@@ -335,6 +335,11 @@
    }
  #endif
  
@@ -105,8 +105,26 @@
    UniquePtr<Options> options(new Options());
    // crashAfterTicks is guaranteed to be > 0 as
    // crashAfterMS >= ADDITIONAL_WAIT_BEFORE_CRASH_MS >> HEARTBEAT_INTERVAL_MS
+--- ./toolkit/components/translations/actors/TranslationsParent.sys.mjs.orig	2024-10-08 23:18:42.000000000 +0200
++++ ./toolkit/components/translations/actors/TranslationsParent.sys.mjs	2024-11-07 19:47:12.607677062 +0100
+@@ -623,6 +623,15 @@
+    * @type {boolean}
+    */
+   static getIsTranslationsEngineSupported() {
++    try {
++      // Ensure WebAssembly is supported and enabled (may not be on tier-3).
++      if (!WebAssembly) {
++        return false;
++      }
++    } catch(e) {
++      return false;
++    }
++
+     if (lazy.simulateUnsupportedEnginePref) {
+       // Use the non-lazy console.log so that the user is always informed as to why
+       // the translations engine is not working.
 --- ./gfx/cairo/libpixman/src/pixman-combine-float.c.orig	2024-10-08 23:18:28.000000000 +0200
-+++ ./gfx/cairo/libpixman/src/pixman-combine-float.c	2024-10-13 10:10:33.088044900 +0200
++++ ./gfx/cairo/libpixman/src/pixman-combine-float.c	2024-11-07 19:47:12.557682031 +0100
 @@ -42,6 +42,12 @@
  #define force_inline __inline__
  #endif
@@ -121,7 +139,7 @@
  
  static force_inline void
 --- ./js/src/irregexp/RegExpNativeMacroAssembler.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/irregexp/RegExpNativeMacroAssembler.cpp	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/irregexp/RegExpNativeMacroAssembler.cpp	2024-11-07 19:47:12.597678056 +0100
 @@ -952,8 +952,23 @@
        AbsoluteAddress(isolate()->regexp_stack()->limit_address_address()),
        backtrack_stack_pointer_, &no_stack_overflow);
@@ -158,7 +176,7 @@
    volatileRegs.takeUnchecked(temp0_);
    volatileRegs.takeUnchecked(temp1_);
 --- ./js/src/tests/jstests.py.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/tests/jstests.py	2024-10-13 10:10:33.138039815 +0200
++++ ./js/src/tests/jstests.py	2024-11-07 19:47:12.597678056 +0100
 @@ -671,7 +671,7 @@
          and not options.make_manifests
      )
@@ -169,7 +187,7 @@
          test_gen = chain(test_gen, wpt_tests)
  
 --- ./js/src/wasm/WasmStubs.cpp.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmStubs.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/wasm/WasmStubs.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -634,7 +634,8 @@
    // Save the return address if it wasn't already saved by the call insn.
  #ifdef JS_USE_LINK_REGISTER
@@ -208,7 +226,7 @@
  static const LiveRegisterSet RegsToPreserve(
      GeneralRegisterSet(0), FloatRegisterSet(FloatRegisters::AllDoubleMask));
 --- ./js/src/wasm/WasmGC.cpp.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmGC.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/wasm/WasmGC.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -311,6 +311,13 @@
             ((insn[-1] & kBaseOpcodeMask) == JAL) ||
             (insn[-1] == 0x00100073 &&
@@ -224,7 +242,7 @@
    MOZ_CRASH("IsValidStackMapKey: requires implementation on this platform");
  #  endif
 --- ./js/src/wasm/WasmAnyRef.h.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmAnyRef.h	2024-10-13 10:10:33.108042866 +0200
++++ ./js/src/wasm/WasmAnyRef.h	2024-11-07 19:47:12.577680044 +0100
 @@ -213,7 +213,7 @@
      // Truncate the value to the 31-bit value size.
      uintptr_t wideValue = uintptr_t(value & 0x7FFFFFFF);
@@ -235,7 +253,7 @@
      uintptr_t wideValue = uintptr_t(int64_t((uint64_t(value) << 33)) >> 33);
  #elif !defined(JS_64BIT)
 --- ./js/src/wasm/WasmBCDefs.h.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmBCDefs.h	2024-10-13 10:10:33.108042866 +0200
++++ ./js/src/wasm/WasmBCDefs.h	2024-11-07 19:47:12.577680044 +0100
 @@ -53,6 +53,9 @@
  #if defined(JS_CODEGEN_RISCV64)
  #  include "jit/riscv64/Assembler-riscv64.h"
@@ -258,7 +276,7 @@
  #  define RABALDR_PIN_INSTANCE
  #endif
 --- ./js/src/wasm/WasmBCMemory.cpp.orig	2024-10-08 23:18:31.000000000 +0200
-+++ ./js/src/wasm/WasmBCMemory.cpp	2024-10-13 10:10:33.108042866 +0200
++++ ./js/src/wasm/WasmBCMemory.cpp	2024-11-07 19:47:12.577680044 +0100
 @@ -609,6 +609,13 @@
    } else {
      masm.wasmLoad(*access, memoryBase, ptr, ptr, dest.any());
@@ -365,7 +383,7 @@
  template <typename RegIndexType>
  static void PopAndAllocate(BaseCompiler* bc, RegI64* rexpect, RegI64* rnew,
 --- ./js/src/wasm/WasmSignalHandlers.cpp.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmSignalHandlers.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/wasm/WasmSignalHandlers.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -109,7 +109,9 @@
  #    if defined(__ppc64__) || defined(__PPC64__) || defined(__ppc64le__) || \
          defined(__PPC64LE__)
@@ -438,7 +456,7 @@
  #  else
    state.lr = (void*)UINTPTR_MAX;
 --- ./js/src/wasm/WasmBCRegDefs.h.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmBCRegDefs.h	2024-10-13 10:10:33.108042866 +0200
++++ ./js/src/wasm/WasmBCRegDefs.h	2024-11-07 19:47:12.577680044 +0100
 @@ -120,6 +120,13 @@
  static constexpr Register RabaldrScratchI32 = CallTempReg2;
  #endif
@@ -464,7 +482,7 @@
    // Required by gcc.
    SpecificRegs() {}
 --- ./js/src/wasm/WasmBaselineCompile.cpp.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmBaselineCompile.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/wasm/WasmBaselineCompile.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -277,7 +277,7 @@
    masm.ma_ldr(DTRAddr(scratch, DtrRegImmShift(switchValue, LSL, 2)), pc, Offset,
                Assembler::Always);
@@ -599,7 +617,7 @@
  #else
    return false;
 --- ./js/src/wasm/WasmCompile.cpp.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmCompile.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/wasm/WasmCompile.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -59,6 +59,7 @@
      ARM64 = 0x6,
      LOONG64 = 0x7,
@@ -619,7 +637,7 @@
    return 0;
  #else
 --- ./js/src/wasm/WasmFrameIter.cpp.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/wasm/WasmFrameIter.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/wasm/WasmFrameIter.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -481,6 +481,12 @@
  static const unsigned SetFP = 20;
  static const unsigned PoppedFP = 4;
@@ -737,7 +755,7 @@
        } else if (offsetInCode >= codeRange->ret() - PoppedFP &&
                   offsetInCode < codeRange->ret()) {
 --- ./js/src/wasm/WasmSummarizeInsn.cpp.orig	2024-10-08 23:18:31.000000000 +0200
-+++ ./js/src/wasm/WasmSummarizeInsn.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/wasm/WasmSummarizeInsn.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -1443,6 +1443,14 @@
  
    return Nothing();
@@ -754,7 +772,7 @@
  // ================================================================== none ====
  
 --- ./js/src/jit/shared/Assembler-shared.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/shared/Assembler-shared.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/shared/Assembler-shared.h	2024-11-07 19:47:12.597678056 +0100
 @@ -29,14 +29,14 @@
  #if defined(JS_CODEGEN_ARM) || defined(JS_CODEGEN_ARM64) ||      \
      defined(JS_CODEGEN_MIPS32) || defined(JS_CODEGEN_MIPS64) ||  \
@@ -773,7 +791,7 @@
  // describing how Bind() should patch them.
  #  define JS_CODELABEL_LINKMODE
 --- ./js/src/jit/shared/AtomicOperations-shared-jit.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/shared/AtomicOperations-shared-jit.cpp	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/shared/AtomicOperations-shared-jit.cpp	2024-11-07 19:47:12.597678056 +0100
 @@ -59,6 +59,9 @@
  #  elif defined(__aarch64__)
    // This is not necessarily true but it's the best guess right now.
@@ -785,7 +803,7 @@
  #    error "Unsupported platform"
  #  endif
 --- ./js/src/jit/shared/Lowering-shared-inl.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/shared/Lowering-shared-inl.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/shared/Lowering-shared-inl.h	2024-11-07 19:47:12.597678056 +0100
 @@ -523,7 +523,7 @@
  
  #if defined(JS_CODEGEN_ARM) || defined(JS_CODEGEN_ARM64) ||      \
@@ -796,7 +814,7 @@
    return useRegisterOrConstant(mir);
  }
 --- ./js/src/jit/shared/CodeGenerator-shared.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/shared/CodeGenerator-shared.cpp	2024-10-13 10:10:33.138039815 +0200
++++ ./js/src/jit/shared/CodeGenerator-shared.cpp	2024-11-07 19:47:12.597678056 +0100
 @@ -150,6 +150,8 @@
    MOZ_ASSERT(masm.framePushed() == 0);
    MOZ_ASSERT(!gen->compilingWasm());
@@ -807,7 +825,7 @@
    masm.pushReturnAddress();
  #endif
 --- ./js/src/jit/MoveEmitter.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/MoveEmitter.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/MoveEmitter.h	2024-11-07 19:47:12.597678056 +0100
 @@ -21,6 +21,8 @@
  #  include "jit/loong64/MoveEmitter-loong64.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -817,8 +835,8 @@
  #elif defined(JS_CODEGEN_WASM32)
  #  include "jit/wasm32/MoveEmitter-wasm32.h"
  #elif defined(JS_CODEGEN_NONE)
---- ./js/src/jit/ppc64/Architecture-ppc64.cpp.orig	2024-10-13 10:10:33.088044900 +0200
-+++ ./js/src/jit/ppc64/Architecture-ppc64.cpp	2024-10-13 10:10:33.088044900 +0200
+--- ./js/src/jit/ppc64/Architecture-ppc64.cpp.orig	2024-11-07 19:47:12.557682031 +0100
++++ ./js/src/jit/ppc64/Architecture-ppc64.cpp	2024-11-07 19:47:12.557682031 +0100
 @@ -0,0 +1,141 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -961,8 +979,8 @@
 +} // namespace ion
 +} // namespace js
 +
---- ./js/src/jit/ppc64/Architecture-ppc64.h.orig	2024-10-13 10:10:33.088044900 +0200
-+++ ./js/src/jit/ppc64/Architecture-ppc64.h	2024-10-13 10:10:33.088044900 +0200
+--- ./js/src/jit/ppc64/Architecture-ppc64.h.orig	2024-11-07 19:47:12.557682031 +0100
++++ ./js/src/jit/ppc64/Architecture-ppc64.h	2024-11-07 19:47:12.557682031 +0100
 @@ -0,0 +1,645 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -1609,8 +1627,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc_Architecture_ppc_h */
---- ./js/src/jit/ppc64/Assembler-ppc64.cpp.orig	2024-10-13 10:10:33.098043883 +0200
-+++ ./js/src/jit/ppc64/Assembler-ppc64.cpp	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/Assembler-ppc64.cpp.orig	2024-11-07 19:47:12.557682031 +0100
++++ ./js/src/jit/ppc64/Assembler-ppc64.cpp	2024-11-07 19:47:12.557682031 +0100
 @@ -0,0 +1,2048 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -3660,8 +3678,8 @@
 +    spew("stop!!!\n");
 +    return writeInst(PPC_stop);
 +}
---- ./js/src/jit/ppc64/Assembler-ppc64.h.orig	2024-10-13 10:10:33.098043883 +0200
-+++ ./js/src/jit/ppc64/Assembler-ppc64.h	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/Assembler-ppc64.h.orig	2024-11-07 19:47:12.567681038 +0100
++++ ./js/src/jit/ppc64/Assembler-ppc64.h	2024-11-07 19:47:12.567681038 +0100
 @@ -0,0 +1,1847 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -5510,8 +5528,8 @@
 +    (((x).offset + incr) & 0xffff8000) == 0xffff8000))
 +
 +#endif /* jit_ppc_Assembler_ppc_h */
---- ./js/src/jit/ppc64/AtomicOperations-ppc64.h.orig	2024-10-13 10:10:33.098043883 +0200
-+++ ./js/src/jit/ppc64/AtomicOperations-ppc64.h	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/AtomicOperations-ppc64.h.orig	2024-11-07 19:47:12.567681038 +0100
++++ ./js/src/jit/ppc64/AtomicOperations-ppc64.h	2024-11-07 19:47:12.567681038 +0100
 @@ -0,0 +1,200 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -5713,8 +5731,8 @@
 +}
 +
 +#endif // jit_ppc64le_AtomicOperations_ppc64le_h
---- ./js/src/jit/ppc64/CodeGenerator-ppc64.cpp.orig	2024-10-13 10:10:33.098043883 +0200
-+++ ./js/src/jit/ppc64/CodeGenerator-ppc64.cpp	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/CodeGenerator-ppc64.cpp.orig	2024-11-07 19:47:12.567681038 +0100
++++ ./js/src/jit/ppc64/CodeGenerator-ppc64.cpp	2024-11-07 19:47:12.567681038 +0100
 @@ -0,0 +1,3596 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -9312,8 +9330,8 @@
 +    MOZ_CRASH("NYI");
 +}
 +#endif
---- ./js/src/jit/ppc64/CodeGenerator-ppc64.h.orig	2024-10-13 10:10:33.098043883 +0200
-+++ ./js/src/jit/ppc64/CodeGenerator-ppc64.h	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/CodeGenerator-ppc64.h.orig	2024-11-07 19:47:12.567681038 +0100
++++ ./js/src/jit/ppc64/CodeGenerator-ppc64.h	2024-11-07 19:47:12.567681038 +0100
 @@ -0,0 +1,191 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -9506,8 +9524,8 @@
 +} // namespace js
 +
 +#endif /* jit_PPC64_CodeGenerator_PPC64_h */
---- ./js/src/jit/ppc64/LIR-ppc64.h.orig	2024-10-13 10:10:33.098043883 +0200
-+++ ./js/src/jit/ppc64/LIR-ppc64.h	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/LIR-ppc64.h.orig	2024-11-07 19:47:12.567681038 +0100
++++ ./js/src/jit/ppc64/LIR-ppc64.h	2024-11-07 19:47:12.567681038 +0100
 @@ -0,0 +1,611 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -10120,8 +10138,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc64le_LIR_ppc64le_h */
---- ./js/src/jit/ppc64/Lowering-ppc64.cpp.orig	2024-10-13 10:10:33.098043883 +0200
-+++ ./js/src/jit/ppc64/Lowering-ppc64.cpp	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/Lowering-ppc64.cpp.orig	2024-11-07 19:47:12.567681038 +0100
++++ ./js/src/jit/ppc64/Lowering-ppc64.cpp	2024-11-07 19:47:12.567681038 +0100
 @@ -0,0 +1,1289 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -11412,8 +11430,8 @@
 +}
 +#endif
 +
---- ./js/src/jit/ppc64/Lowering-ppc64.h.orig	2024-10-13 10:10:33.098043883 +0200
-+++ ./js/src/jit/ppc64/Lowering-ppc64.h	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/Lowering-ppc64.h.orig	2024-11-07 19:47:12.567681038 +0100
++++ ./js/src/jit/ppc64/Lowering-ppc64.h	2024-11-07 19:47:12.567681038 +0100
 @@ -0,0 +1,136 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -11551,8 +11569,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc64le_Lowering_ppc64le_h */
---- ./js/src/jit/ppc64/MacroAssembler-ppc64-inl.h.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/MacroAssembler-ppc64-inl.h	2024-10-13 10:10:33.098043883 +0200
+--- ./js/src/jit/ppc64/MacroAssembler-ppc64-inl.h.orig	2024-11-07 19:47:12.567681038 +0100
++++ ./js/src/jit/ppc64/MacroAssembler-ppc64-inl.h	2024-11-07 19:47:12.567681038 +0100
 @@ -0,0 +1,2769 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -14323,8 +14341,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc64le_MacroAssembler_ppc64le_inl_h */
---- ./js/src/jit/ppc64/MacroAssembler-ppc64.cpp.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/MacroAssembler-ppc64.cpp	2024-10-13 10:10:33.108042866 +0200
+--- ./js/src/jit/ppc64/MacroAssembler-ppc64.cpp.orig	2024-11-07 19:47:12.577680044 +0100
++++ ./js/src/jit/ppc64/MacroAssembler-ppc64.cpp	2024-11-07 19:47:12.577680044 +0100
 @@ -0,0 +1,5904 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -20230,8 +20248,8 @@
 +    as_eieio();
 +    // Go, Gadget, Go!
 +}
---- ./js/src/jit/ppc64/MacroAssembler-ppc64.h.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/MacroAssembler-ppc64.h	2024-10-13 10:10:33.108042866 +0200
+--- ./js/src/jit/ppc64/MacroAssembler-ppc64.h.orig	2024-11-07 19:47:12.577680044 +0100
++++ ./js/src/jit/ppc64/MacroAssembler-ppc64.h	2024-11-07 19:47:12.577680044 +0100
 @@ -0,0 +1,1178 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -21411,8 +21429,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc64_MacroAssembler_ppc64_h */
---- ./js/src/jit/ppc64/MoveEmitter-ppc64.cpp.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/MoveEmitter-ppc64.cpp	2024-10-13 10:10:33.108042866 +0200
+--- ./js/src/jit/ppc64/MoveEmitter-ppc64.cpp.orig	2024-11-07 19:47:12.577680044 +0100
++++ ./js/src/jit/ppc64/MoveEmitter-ppc64.cpp	2024-11-07 19:47:12.577680044 +0100
 @@ -0,0 +1,366 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -21780,8 +21798,8 @@
 +
 +    masm.freeStack(masm.framePushed() - pushedAtStart_);
 +}
---- ./js/src/jit/ppc64/MoveEmitter-ppc64.h.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/MoveEmitter-ppc64.h	2024-10-13 10:10:33.108042866 +0200
+--- ./js/src/jit/ppc64/MoveEmitter-ppc64.h.orig	2024-11-07 19:47:12.577680044 +0100
++++ ./js/src/jit/ppc64/MoveEmitter-ppc64.h	2024-11-07 19:47:12.577680044 +0100
 @@ -0,0 +1,78 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -21861,8 +21879,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc64le_MoveEmitter_ppc64le_h */
---- ./js/src/jit/ppc64/SharedICHelpers-ppc64-inl.h.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/SharedICHelpers-ppc64-inl.h	2024-10-13 10:10:33.108042866 +0200
+--- ./js/src/jit/ppc64/SharedICHelpers-ppc64-inl.h.orig	2024-11-07 19:47:12.577680044 +0100
++++ ./js/src/jit/ppc64/SharedICHelpers-ppc64-inl.h	2024-11-07 19:47:12.577680044 +0100
 @@ -0,0 +1,80 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -21944,8 +21962,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc64le_SharedICHelpers_ppc64le_inl_h */
---- ./js/src/jit/ppc64/SharedICHelpers-ppc64.h.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/SharedICHelpers-ppc64.h	2024-10-13 10:10:33.108042866 +0200
+--- ./js/src/jit/ppc64/SharedICHelpers-ppc64.h.orig	2024-11-07 19:47:12.577680044 +0100
++++ ./js/src/jit/ppc64/SharedICHelpers-ppc64.h	2024-11-07 19:47:12.577680044 +0100
 @@ -0,0 +1,106 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -22053,8 +22071,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc64le_SharedICHelpers_ppc64le_h */
---- ./js/src/jit/ppc64/SharedICRegisters-ppc64.h.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/SharedICRegisters-ppc64.h	2024-10-13 10:10:33.108042866 +0200
+--- ./js/src/jit/ppc64/SharedICRegisters-ppc64.h.orig	2024-11-07 19:47:12.577680044 +0100
++++ ./js/src/jit/ppc64/SharedICRegisters-ppc64.h	2024-11-07 19:47:12.577680044 +0100
 @@ -0,0 +1,44 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -22100,8 +22118,8 @@
 +} // namespace js
 +
 +#endif /* jit_ppc64le_SharedICRegisters_ppc64le_h */
---- ./js/src/jit/ppc64/Trampoline-ppc64.cpp.orig	2024-10-13 10:10:33.108042866 +0200
-+++ ./js/src/jit/ppc64/Trampoline-ppc64.cpp	2024-10-13 10:10:33.108042866 +0200
+--- ./js/src/jit/ppc64/Trampoline-ppc64.cpp.orig	2024-11-07 19:47:12.577680044 +0100
++++ ./js/src/jit/ppc64/Trampoline-ppc64.cpp	2024-11-07 19:47:12.577680044 +0100
 @@ -0,0 +1,988 @@
 +/* -*- Mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 4 -*-
 + * vim: set ts=8 sts=4 et sw=4 tw=99:
@@ -23092,7 +23110,7 @@
 +}
 +
 --- ./js/src/jit/Lowering.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/Lowering.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/Lowering.h	2024-11-07 19:47:12.587679050 +0100
 @@ -27,6 +27,8 @@
  #  include "jit/loong64/Lowering-loong64.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -23103,7 +23121,7 @@
  #  include "jit/wasm32/Lowering-wasm32.h"
  #elif defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/Assembler.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/Assembler.h	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit/Assembler.h	2024-11-07 19:47:12.587679050 +0100
 @@ -23,6 +23,8 @@
  #  include "jit/loong64/Assembler-loong64.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -23114,7 +23132,7 @@
  #  include "jit/wasm32/Assembler-wasm32.h"
  #elif defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/SharedICHelpers-inl.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/SharedICHelpers-inl.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/SharedICHelpers-inl.h	2024-11-07 19:47:12.597678056 +0100
 @@ -21,6 +21,8 @@
  #  include "jit/loong64/SharedICHelpers-loong64-inl.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -23125,7 +23143,7 @@
  #  include "jit/wasm32/SharedICHelpers-wasm32-inl.h"
  #elif defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/BaselineIC.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/BaselineIC.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit/BaselineIC.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -112,7 +112,8 @@
  #if defined(JS_CODEGEN_ARM)
    MOZ_ASSERT(!regs.has(ICTailCallReg));
@@ -23137,7 +23155,7 @@
    MOZ_ASSERT(!regs.has(BaselineSecondScratchReg));
  #elif defined(JS_CODEGEN_ARM64)
 --- ./js/src/jit/LIR.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/LIR.h	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit/LIR.h	2024-11-07 19:47:12.587679050 +0100
 @@ -554,7 +554,7 @@
    Type type() const { return (Type)((bits_ >> TYPE_SHIFT) & TYPE_MASK); }
  
@@ -23157,7 +23175,7 @@
  #  include "jit/wasm32/LIR-wasm32.h"
  #elif defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/CodeGenerator.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/CodeGenerator.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit/CodeGenerator.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -2129,6 +2129,13 @@
        Address(FramePointer, inputOutputDataStartOffset), temp2);
    masm.PushRegsInMask(volatileRegs);
@@ -23183,7 +23201,7 @@
    bailoutCmp32(Assembler::NotEqual, initLength, index, ins->snapshot());
  #else
 --- ./js/src/jit/CodeGenerator.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/CodeGenerator.h	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit/CodeGenerator.h	2024-11-07 19:47:12.587679050 +0100
 @@ -27,6 +27,8 @@
  #  include "jit/loong64/CodeGenerator-loong64.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -23194,7 +23212,7 @@
  #  include "jit/wasm32/CodeGenerator-wasm32.h"
  #elif defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/LIROps.yaml.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/LIROps.yaml	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/LIROps.yaml	2024-11-07 19:47:12.587679050 +0100
 @@ -4410,6 +4410,47 @@
    gen_boilerplate: false
  #endif
@@ -23244,7 +23262,7 @@
  - name: FuzzilliHashT
    gen_boilerplate: false
 --- ./js/src/jit/FlushICache.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/FlushICache.h	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit/FlushICache.h	2024-11-07 19:47:12.587679050 +0100
 @@ -24,7 +24,8 @@
  
  #elif (defined(JS_CODEGEN_ARM) || defined(JS_CODEGEN_ARM64)) ||   \
@@ -23266,7 +23284,7 @@
  inline void FlushExecutionContext() {
    // No-op. Execution context is coherent with instruction cache.
 --- ./js/src/jit/Label.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/Label.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/Label.h	2024-11-07 19:47:12.587679050 +0100
 @@ -27,7 +27,8 @@
    void operator=(const LabelBase& label) = delete;
  
@@ -23278,7 +23296,7 @@
  #endif
    static const uint32_t INVALID_OFFSET = 0x7fffffff;  // UINT31_MAX.
 --- ./js/src/jit/JitFrames.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/JitFrames.cpp	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit/JitFrames.cpp	2024-11-07 19:47:12.587679050 +0100
 @@ -1770,7 +1770,15 @@
        return DoubleValue(fromRegister<double>(alloc.fpuReg()));
  
@@ -23309,7 +23327,7 @@
  #endif
  
 --- ./js/src/jit/JitFrames.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/JitFrames.h	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit/JitFrames.h	2024-11-07 19:47:12.587679050 +0100
 @@ -124,6 +124,16 @@
  
  // Data needed to recover from an exception.
@@ -23328,7 +23346,7 @@
    uint8_t* stackPointer;
    uint8_t* target;
 --- ./js/src/jit/MacroAssembler-inl.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/MacroAssembler-inl.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/MacroAssembler-inl.h	2024-11-07 19:47:12.587679050 +0100
 @@ -43,6 +43,8 @@
  #  include "jit/loong64/MacroAssembler-loong64-inl.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -23339,7 +23357,7 @@
  #  include "jit/wasm32/MacroAssembler-wasm32-inl.h"
  #elif !defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/MacroAssembler.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/MacroAssembler.cpp	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/MacroAssembler.cpp	2024-11-07 19:47:12.597678056 +0100
 @@ -3788,7 +3788,8 @@
  
  #if defined(JS_CODEGEN_ARM) || defined(JS_CODEGEN_ARM64) ||     \
@@ -23386,7 +23404,7 @@
    PushRegsInMask(LiveRegisterSet(RegisterSet::Volatile()));
  
 --- ./js/src/jit/MacroAssembler.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/MacroAssembler.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/MacroAssembler.h	2024-11-07 19:47:12.597678056 +0100
 @@ -31,6 +31,8 @@
  #  include "jit/loong64/MacroAssembler-loong64.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -24421,7 +24439,7 @@
  
    template <typename T>
 --- ./js/src/jit/RegisterAllocator.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/RegisterAllocator.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/RegisterAllocator.h	2024-11-07 19:47:12.597678056 +0100
 @@ -294,7 +294,7 @@
  #if defined(JS_CODEGEN_X64) || defined(JS_CODEGEN_ARM) ||        \
      defined(JS_CODEGEN_ARM64) || defined(JS_CODEGEN_MIPS32) ||   \
@@ -24432,7 +24450,7 @@
  #endif
      MOZ_ASSERT(!regs.has(FramePointer));
 --- ./js/src/jit/Registers.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/Registers.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/Registers.h	2024-11-07 19:47:12.597678056 +0100
 @@ -24,6 +24,8 @@
  #  include "jit/loong64/Architecture-loong64.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -24443,7 +24461,7 @@
  #  include "jit/wasm32/Architecture-wasm32.h"
  #elif defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/SharedICHelpers.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/SharedICHelpers.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/SharedICHelpers.h	2024-11-07 19:47:12.597678056 +0100
 @@ -21,6 +21,8 @@
  #  include "jit/loong64/SharedICHelpers-loong64.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -24454,7 +24472,7 @@
  #  include "jit/wasm32/SharedICHelpers-wasm32.h"
  #elif defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/SharedICRegisters.h.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/SharedICRegisters.h	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/SharedICRegisters.h	2024-11-07 19:47:12.597678056 +0100
 @@ -23,6 +23,8 @@
  #  include "jit/loong64/SharedICRegisters-loong64.h"
  #elif defined(JS_CODEGEN_RISCV64)
@@ -24465,7 +24483,7 @@
  #  include "jit/wasm32/SharedICRegisters-wasm32.h"
  #elif defined(JS_CODEGEN_NONE)
 --- ./js/src/jit/moz.build.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit/moz.build	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jit/moz.build	2024-11-07 19:47:12.597678056 +0100
 @@ -255,6 +255,16 @@
      ]
      if CONFIG["JS_SIMULATOR_RISCV64"]:
@@ -24484,7 +24502,7 @@
      UNIFIED_SOURCES += [
          "wasm32/CodeGenerator-wasm32.cpp",
 --- ./js/src/util/Poison.h.orig	2024-10-08 23:18:32.000000000 +0200
-+++ ./js/src/util/Poison.h	2024-10-13 10:10:33.138039815 +0200
++++ ./js/src/util/Poison.h	2024-11-07 19:47:12.597678056 +0100
 @@ -92,6 +92,8 @@
  #elif defined(JS_CODEGEN_RISCV64)
  #  define JS_SWEPT_CODE_PATTERN \
@@ -24495,7 +24513,7 @@
  #  error "JS_SWEPT_CODE_PATTERN not defined for this platform"
  #endif
 --- ./js/src/builtin/TestingFunctions.cpp.orig	2024-10-08 23:18:28.000000000 +0200
-+++ ./js/src/builtin/TestingFunctions.cpp	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/builtin/TestingFunctions.cpp	2024-11-07 19:47:12.597678056 +0100
 @@ -491,6 +491,15 @@
      return false;
    }
@@ -24513,7 +24531,7 @@
    value = BooleanValue(true);
  #else
 --- ./js/src/jit-test/tests/modules/bug1670236.js.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit-test/tests/modules/bug1670236.js	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit-test/tests/modules/bug1670236.js	2024-11-07 19:47:12.587679050 +0100
 @@ -1,3 +1,6 @@
 +// |jit-test| skip-if: getBuildConfiguration().ppc64
 +// On ppc64, this will never exhaust memory before timing out.
@@ -24522,7 +24540,7 @@
  this.toString=(function() {
      evaluate("",({ element:o0 }));
 --- ./js/src/jit-test/tests/promise/unhandled-rejections-oom.js.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit-test/tests/promise/unhandled-rejections-oom.js	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit-test/tests/promise/unhandled-rejections-oom.js	2024-11-07 19:47:12.587679050 +0100
 @@ -1,3 +1,4 @@
 -// |jit-test| allow-oom
 +// |jit-test| allow-oom; skip-if: getBuildConfiguration().ppc64
@@ -24530,7 +24548,7 @@
  
  oomTest(async function() {}, { keepFailing: true });
 --- ./js/src/jit-test/tests/gc/gcparam.js.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit-test/tests/gc/gcparam.js	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit-test/tests/gc/gcparam.js	2024-11-07 19:47:12.587679050 +0100
 @@ -30,7 +30,9 @@
  testGetParam("helperThreadCount");
  
@@ -24543,7 +24561,7 @@
  testChangeParam("incrementalGCEnabled");
  testChangeParam("perZoneGCEnabled");
 --- ./js/src/jit-test/tests/gc/oomInRegExp2.js.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jit-test/tests/gc/oomInRegExp2.js	2024-10-13 10:10:33.118041849 +0200
++++ ./js/src/jit-test/tests/gc/oomInRegExp2.js	2024-11-07 19:47:12.587679050 +0100
 @@ -1,3 +1,6 @@
 +// |jit-test| skip-if: getBuildConfiguration().ppc64
 +// On ppc64, this will never exhaust memory before timing out.
@@ -24552,7 +24570,7 @@
  oomTest(() => assertEq((/(?!(?!(?!6)[\Wc]))/i).test(), false), {keepFailing: true});
  oomTest(() => assertEq((/bar\u0178\d/i).exec("foobar\xff5baz\u1200") != null, true), {keepFailing: true});
 --- ./js/src/jsapi-tests/testJitABIcalls.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jsapi-tests/testJitABIcalls.cpp	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jsapi-tests/testJitABIcalls.cpp	2024-11-07 19:47:12.597678056 +0100
 @@ -667,6 +667,9 @@
  #elif defined(JS_CODEGEN_RISCV64)
      Register base = t0;
@@ -24564,7 +24582,7 @@
  #  error "Unknown architecture!"
  #endif
 --- ./js/src/jsapi-tests/testsJit.cpp.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/src/jsapi-tests/testsJit.cpp	2024-10-13 10:10:33.128040832 +0200
++++ ./js/src/jsapi-tests/testsJit.cpp	2024-11-07 19:47:12.597678056 +0100
 @@ -26,6 +26,10 @@
  #if defined(JS_CODEGEN_MIPS32) || defined(JS_CODEGEN_MIPS64) || \
      defined(JS_CODEGEN_LOONG64) || defined(JS_CODEGEN_RISCV64)
@@ -24599,7 +24617,7 @@
    // Exit the JIT-ed code using the ABI return style.
    masm.abiret();
 --- ./js/moz.configure.orig	2024-10-08 23:18:29.000000000 +0200
-+++ ./js/moz.configure	2024-10-13 10:10:33.128040832 +0200
++++ ./js/moz.configure	2024-11-07 19:47:12.597678056 +0100
 @@ -341,6 +341,8 @@
          return namespace(loong64=True)
      elif target.cpu == "riscv64":
@@ -24626,7 +24644,7 @@
  set_define("JS_CODEGEN_X64", jit_codegen.x64)
  set_define("JS_CODEGEN_WASM32", jit_codegen.wasm32)
 --- ./third_party/python/urllib3/urllib3/util/connection.py.orig	2024-10-08 23:18:41.000000000 +0200
-+++ ./third_party/python/urllib3/urllib3/util/connection.py	2024-10-13 10:10:33.138039815 +0200
++++ ./third_party/python/urllib3/urllib3/util/connection.py	2024-11-07 19:47:12.607677062 +0100
 @@ -40,6 +40,7 @@
      source_address=None,
      socket_options=None,
